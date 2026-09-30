@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Clock, Compass, Sparkles, ArrowRight, Check, X, MessageSquare } from 'lucide-react';
 import { EXPERIENCES, RetreatExperience, RESORT_INFO } from '../data/retreatData';
+import { CinematicSectionHeader } from './MotionReveal';
 
 export const Experiences: React.FC = () => {
   const [selectedExp, setSelectedExp] = useState<RetreatExperience | null>(null);
@@ -23,18 +24,13 @@ export const Experiences: React.FC = () => {
   return (
     <section id="experiences" className="py-24 lg:py-32 bg-[#0E231C] text-[#F7F4EE] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
-            Curated Immersions
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight mb-4">
-            Experiences Crafted for Memory
-          </h2>
-          <p className="text-sm sm:text-base text-[#F7F4EE]/75 font-light leading-relaxed">
-            Beyond the retreat’s walls lie the living stories of Mewar—ancient Aravali trails, quiet solar boat navigations, twilight sound journeys, and secluded starlit pavilions.
-          </p>
-        </div>
+        {/* Section Header with Cinematic Staggered Fade-in */}
+        <CinematicSectionHeader
+          kicker="Curated Immersions"
+          title="Experiences Crafted for Memory"
+          subtitle="Beyond the retreat’s walls lie the living stories of Mewar—ancient Aravali trails, quiet solar boat navigations, twilight sound journeys, and secluded starlit pavilions."
+          className="mb-16"
+        />
 
         {/* 6 Curated Experiences Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { X, Maximize2, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { GALLERY_ITEMS, GalleryItem } from '../data/retreatData';
 
 export const Gallery: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const categories = [
     { id: 'all', label: 'All Perspectives' },
@@ -41,16 +43,33 @@ export const Gallery: React.FC = () => {
   return (
     <section id="gallery" className="py-24 lg:py-32 bg-[#0E231C] text-[#F7F4EE] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
+        {/* Section Header with Framer Motion Stagger */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ staggerChildren: shouldReduceMotion ? 0 : 0.15 }}
+          >
+            <motion.span
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.75, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2"
+            >
               Visual Chronicle
-            </span>
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight">
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.85, delay: shouldReduceMotion ? 0 : 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight"
+            >
               Cinematic Gallery
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
 
           {/* Category Tabs (Adhering to Zero-Pill Discipline with clean segmented tabs) */}
           <div className="flex flex-wrap items-center gap-1.5 p-1 bg-[#091713]/80 border border-[#C5A880]/20 rounded-md">

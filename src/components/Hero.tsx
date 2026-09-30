@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { Calendar, Users, BedDouble, ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
+import { Calendar, Users, BedDouble, ChevronDown, ArrowRight } from 'lucide-react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { RESORT_INFO } from '../data/retreatData';
+import { Hero3DCanvas } from './Hero3DCanvas';
+
+const CINEMATIC_EASE = [0.16, 1, 0.3, 1] as const;
 
 interface HeroProps {
   onPlanStay: (initialBookingData?: { checkIn: string; checkOut: string; guests: number; roomCategory: string }) => void;
@@ -9,7 +13,6 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExploreResort }) => {
-  // Quick bar state
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
   const dayAfterTomorrow = new Date(Date.now() + 172800000).toISOString().split('T')[0];
 
@@ -18,6 +21,8 @@ export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExplore
   const [guests, setGuests] = useState(2);
   const [roomCategory, setRoomCategory] = useState('Grand Suites');
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  const shouldReduceMotion = useReducedMotion();
 
   const handleQuickSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,20 +34,70 @@ export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExplore
     });
   };
 
+  // Motion variants for subtle staggered hero sequence
+  const heroContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.18,
+        delayChildren: shouldReduceMotion ? 0 : 0.15,
+      },
+    },
+  };
+
+  const heroItemVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: shouldReduceMotion ? 0 : 24,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: shouldReduceMotion ? 0.2 : 0.9,
+        ease: CINEMATIC_EASE,
+      },
+    },
+  };
+
+  const bookingBarVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: shouldReduceMotion ? 0 : 28,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: shouldReduceMotion ? 0.2 : 0.9,
+        delay: shouldReduceMotion ? 0 : 0.7,
+        ease: CINEMATIC_EASE,
+      },
+    },
+  };
+
   return (
     <section className="relative min-h-screen flex flex-col justify-between pt-28 pb-12 lg:pb-16 overflow-hidden">
       {/* Background Cinematic Treatment */}
       <div className="absolute inset-0 z-0">
-        {/* Fallback stylized gradient while loading or on network loss */}
+        {/* Stylized gradient baseline */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#091713] via-[#0E231C] to-[#162D24]" />
         
         {/* Curated High-Resolution Cinematic Visual with graceful fade-in */}
-        <img
+        <motion.img
+          initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 1.05 }}
+          animate={{
+            opacity: imageLoaded ? 0.55 : 0,
+            scale: imageLoaded ? 1 : 1.05,
+          }}
+          transition={{
+            opacity: { duration: 1.2 },
+            scale: { duration: shouldReduceMotion ? 0 : 3.5, ease: [0.16, 1, 0.3, 1] },
+          }}
           src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=2400&q=85"
           alt="Aranya Grand Retreat tranquil lakeside architecture and sandstone pavilion at dusk"
-          className={`w-full h-full object-cover object-center transition-opacity duration-1000 scale-105 motion-safe:animate-[kenburns_30s_infinite_alternate] ${
-            imageLoaded ? 'opacity-55' : 'opacity-0'
-          }`}
+          className="w-full h-full object-cover object-center"
           onLoad={() => setImageLoaded(true)}
           referrerPolicy="no-referrer"
           fetchPriority="high"
@@ -54,29 +109,49 @@ export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExplore
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#0E231C] to-transparent pointer-events-none" />
       </div>
 
-      {/* Main Content Area */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full my-auto py-12">
-        <div className="max-w-3xl">
+      {/* 3D WebGL Spatial Animation Layer */}
+      <Hero3DCanvas />
+
+      {/* Main Content Area with Framer Motion Stagger */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full my-auto py-12 pointer-events-none">
+        <motion.div
+          variants={heroContainerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-3xl pointer-events-auto"
+        >
           {/* Subtle location indicator */}
-          <div className="inline-flex items-center gap-2 mb-6 text-xs tracking-[0.25em] uppercase text-[#C5A880] font-medium">
+          <motion.div
+            variants={heroItemVariants}
+            className="inline-flex items-center gap-2 mb-6 text-xs tracking-[0.25em] uppercase text-[#C5A880] font-medium"
+          >
             <span>Udaipur, Rajasthan</span>
             <span className="text-[#C5A880]/40">·</span>
             <span>Near Lake Badi</span>
-          </div>
+          </motion.div>
 
           {/* Primary Editorial Headline */}
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light text-[#FDFBF7] tracking-tight leading-[1.08] mb-6 drop-shadow-sm">
+          <motion.h1
+            variants={heroItemVariants}
+            className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light text-[#FDFBF7] tracking-tight leading-[1.08] mb-6 drop-shadow-sm"
+          >
             Where celebrations <br />
             <span className="italic font-normal text-[#E4D6C1]">become stories.</span>
-          </h1>
+          </motion.h1>
 
           {/* Supporting Copy */}
-          <p className="text-base sm:text-lg lg:text-xl text-[#F7F4EE]/85 font-light leading-relaxed max-w-2xl mb-10 text-pretty">
+          <motion.p
+            variants={heroItemVariants}
+            className="text-base sm:text-lg lg:text-xl text-[#F7F4EE]/85 font-light leading-relaxed max-w-2xl mb-10 text-pretty"
+          >
             A private retreat on the shores of Udaipur, created for slow mornings, unforgettable celebrations and beautifully considered escapes.
-          </p>
+          </motion.p>
 
           {/* Primary, Secondary, and Additional CTAs */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+          <motion.div
+            variants={heroItemVariants}
+            className="flex flex-wrap items-center gap-4 sm:gap-5"
+          >
             <button
               onClick={() => onPlanStay()}
               className="px-7 py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#0E231C] bg-[#C5A880] hover:bg-[#D4B886] rounded-sm transition-all duration-200 shadow-lg hover:shadow-[#C5A880]/20 active:scale-98 flex items-center gap-2"
@@ -99,12 +174,17 @@ export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExplore
               <span>Explore the Resort</span>
               <ChevronDown className="w-4 h-4" />
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
-      {/* Floating Availability Search Bar */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 w-full mt-6">
+      {/* Floating Availability Search Bar with Framer Motion entry */}
+      <motion.div
+        variants={bookingBarVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 w-full mt-6 pointer-events-auto"
+      >
         <form
           onSubmit={handleQuickSearch}
           className="bg-[#142F26]/90 backdrop-blur-md border border-[#C5A880]/25 rounded-md p-4 lg:p-5 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 items-center"
@@ -190,7 +270,7 @@ export const Hero: React.FC<HeroProps> = ({ onPlanStay, onPlanWedding, onExplore
             </button>
           </div>
         </form>
-      </div>
+      </motion.div>
     </section>
   );
 };

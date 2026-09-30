@@ -1,23 +1,20 @@
 import React from 'react';
 import { Quote } from 'lucide-react';
 import { TESTIMONIALS } from '../data/retreatData';
+import { CinematicSectionHeader } from './MotionReveal';
 
 export const Testimonials: React.FC = () => {
   return (
     <section className="py-24 lg:py-32 bg-[#091713] text-[#F7F4EE] relative border-t border-[#C5A880]/15">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
-            Guest Chronicles
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight mb-4">
-            Words of Reverence
-          </h2>
-          <p className="text-xs sm:text-sm text-[#C5A880]/80 tracking-wide font-light">
-            (Curated Fictional Guest Reflections for Portfolio Demonstration)
-          </p>
-        </div>
+        {/* Section Header with Cinematic Staggered Fade-in */}
+        <CinematicSectionHeader
+          align="center"
+          kicker="Guest Chronicles"
+          title="Words of Reverence"
+          subtitle="(Curated Fictional Guest Reflections for Portfolio Demonstration)"
+          className="mb-16"
+        />
 
         {/* 3 Testimonials Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

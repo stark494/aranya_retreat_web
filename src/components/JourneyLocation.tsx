@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Navigation, Plane, Train, Compass, Car, Phone, Mail, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { RESORT_INFO } from '../data/retreatData';
+import { CinematicSectionHeader } from './MotionReveal';
 
 export const JourneyLocation: React.FC = () => {
   const [transferModalOpen, setTransferModalOpen] = useState(false);
@@ -42,18 +43,13 @@ export const JourneyLocation: React.FC = () => {
   return (
     <section id="contact" className="py-24 lg:py-32 bg-[#0E231C] text-[#F7F4EE] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
-            Arrival & Sanctuary
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight mb-4">
-            The Journey to Badi Lake
-          </h2>
-          <p className="text-sm sm:text-base text-[#F7F4EE]/75 font-light leading-relaxed">
-            Secluded in the serene foothills of the Aravalis, Aranya Grand Retreat offers absolute privacy while remaining within effortless reach of Udaipur's royal monuments and transit hubs.
-          </p>
-        </div>
+        {/* Section Header with Cinematic Staggered Fade-in */}
+        <CinematicSectionHeader
+          kicker="Arrival & Sanctuary"
+          title="The Journey to Badi Lake"
+          subtitle="Secluded in the serene foothills of the Aravalis, Aranya Grand Retreat offers absolute privacy while remaining within effortless reach of Udaipur's royal monuments and transit hubs."
+          className="mb-16"
+        />
 
         {/* Address and Directions Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 items-start">

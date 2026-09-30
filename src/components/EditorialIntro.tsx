@@ -1,5 +1,8 @@
 import React from 'react';
 import { ArrowUpRight, Compass, Shield, Sparkles, HeartHandshake } from 'lucide-react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
+
+const CINEMATIC_EASE = [0.16, 1, 0.3, 1] as const;
 
 interface EditorialIntroProps {
   onExploreStay: () => void;
@@ -7,6 +10,30 @@ interface EditorialIntroProps {
 }
 
 export const EditorialIntro: React.FC<EditorialIntroProps> = ({ onExploreStay, onExploreWeddings }) => {
+  const shouldReduceMotion = useReducedMotion();
+
+  const titleStagger: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.16,
+      },
+    },
+  };
+
+  const itemFade: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: shouldReduceMotion ? 0.2 : 0.85,
+        ease: CINEMATIC_EASE,
+      },
+    },
+  };
+
   const pillars = [
     {
       num: '01',
@@ -41,17 +68,29 @@ export const EditorialIntro: React.FC<EditorialIntroProps> = ({ onExploreStay, o
       <div className="absolute bottom-10 -left-48 w-96 h-96 bg-[#1F4538]/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        {/* Editorial Top Lockup */}
+        {/* Editorial Top Lockup with Framer Motion Stagger */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mb-20">
-          <div className="lg:col-span-6">
-            <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-3">
+          <motion.div
+            variants={titleStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            className="lg:col-span-6"
+          >
+            <motion.span
+              variants={itemFade}
+              className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-3"
+            >
               The Aranya Philosophy
-            </span>
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight leading-[1.12]">
+            </motion.span>
+            <motion.h2
+              variants={itemFade}
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight leading-[1.12]"
+            >
               Arrive somewhere <br />
               <span className="italic text-[#E4D6C1]">extraordinary.</span>
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
 
           <div className="lg:col-span-6 space-y-6 text-[#F7F4EE]/80 text-base sm:text-lg font-light leading-relaxed">
             <p>

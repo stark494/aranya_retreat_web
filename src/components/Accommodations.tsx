@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Users, Maximize, ArrowRight, Eye, Sparkles } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { ROOMS, Room } from '../data/retreatData';
 import { RoomModal } from './RoomModal';
+
+const CINEMATIC_EASE = [0.16, 1, 0.3, 1] as const;
 
 interface AccommodationsProps {
   onSelectRoomToBook: (room: Room) => void;
@@ -10,6 +13,7 @@ interface AccommodationsProps {
 export const Accommodations: React.FC<AccommodationsProps> = ({ onSelectRoomToBook }) => {
   const [activeCategory, setActiveCategory] = useState<'All' | 'Grand Suites' | 'Lake View Rooms' | 'Private Villas'>('All');
   const [selectedRoomForModal, setSelectedRoomForModal] = useState<Room | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const filteredRooms = activeCategory === 'All'
     ? ROOMS
@@ -18,16 +22,33 @@ export const Accommodations: React.FC<AccommodationsProps> = ({ onSelectRoomToBo
   return (
     <section id="stay" className="py-24 lg:py-32 bg-[#0E231C] text-[#F7F4EE] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
+        {/* Section Header with Framer Motion Stagger */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-          <div>
-            <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ staggerChildren: shouldReduceMotion ? 0 : 0.15 }}
+          >
+            <motion.span
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.75, ease: CINEMATIC_EASE }}
+              className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2"
+            >
               Sanctuaries of Stillness
-            </span>
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight">
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.85, delay: shouldReduceMotion ? 0 : 0.1, ease: CINEMATIC_EASE }}
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight"
+            >
               Accommodations
-            </h2>
-          </div>
+            </motion.h2>
+          </motion.div>
 
           {/* Interactive Filter Controls (Functional Tabs adhering to Zero-Pill Discipline) */}
           <div className="flex flex-wrap items-center gap-2 p-1.5 bg-[#091713]/80 border border-[#C5A880]/20 rounded-md">

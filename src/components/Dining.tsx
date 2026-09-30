@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Clock, Utensils, Sparkles, MapPin, Wine, Calendar } from 'lucide-react';
 import { DINING_VENUES, DiningVenue } from '../data/retreatData';
 import { DiningModal } from './DiningModal';
+import { CinematicSectionHeader } from './MotionReveal';
 
 export const Dining: React.FC = () => {
   const [activeVenue, setActiveVenue] = useState<DiningVenue>(DINING_VENUES[0]);
@@ -10,18 +11,13 @@ export const Dining: React.FC = () => {
   return (
     <section id="dine" className="py-24 lg:py-32 bg-[#091713] text-[#F7F4EE] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
-            Gastronomy of the Royal Realm
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight mb-4">
-            Dine by Starlight & Water
-          </h2>
-          <p className="text-sm sm:text-base text-[#F7F4EE]/75 font-light leading-relaxed">
-            From heirloom Mewari royal recipes slow-cooked over wood embers to sunset botanical mixology overlooking Lake Badi, dining at Aranya is an immersive celebration of taste, craft, and setting.
-          </p>
-        </div>
+        {/* Section Header with Cinematic Staggered Fade-in */}
+        <CinematicSectionHeader
+          kicker="Gastronomy of the Royal Realm"
+          title="Dine by Starlight & Water"
+          subtitle="From heirloom Mewari royal recipes slow-cooked over wood embers to sunset botanical mixology overlooking Lake Badi, dining at Aranya is an immersive celebration of taste, craft, and setting."
+          className="mb-16"
+        />
 
         {/* Venue Selector Segmented Control (Zero-Pill Discipline) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10 p-1.5 bg-[#0E231C] border border-[#C5A880]/20 rounded-md">

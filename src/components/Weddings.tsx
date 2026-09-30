@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, Users, Phone, Mail, Heart, CheckCircle2, MessageSquare, ArrowRight, ShieldCheck } from 'lucide-react';
 import { WEDDING_VENUES, WeddingVenue, RESORT_INFO } from '../data/retreatData';
+import { CinematicSectionHeader } from './MotionReveal';
 
 export const Weddings: React.FC = () => {
   const [selectedVenue, setSelectedVenue] = useState<WeddingVenue>(WEDDING_VENUES[0]);
@@ -78,18 +79,14 @@ export const Weddings: React.FC = () => {
       <div className="absolute bottom-10 -left-48 w-96 h-96 bg-[#1F4538]/25 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A880] font-medium block mb-2">
-            Destination Celebrations in Udaipur
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#FDFBF7] tracking-tight mb-4">
-            Your celebration, <span className="italic text-[#E4D6C1]">beautifully yours.</span>
-          </h2>
-          <p className="text-sm sm:text-base text-[#F7F4EE]/80 font-light leading-relaxed">
-            From intimate sunset pheras extending over Lake Badi to three-day palace takeovers under Rajasthan’s starlit skies, Aranya crafts destination weddings of timeless emotional resonance.
-          </p>
-        </div>
+        {/* Section Header with Cinematic Staggered Fade-in */}
+        <CinematicSectionHeader
+          align="center"
+          kicker="Destination Celebrations in Udaipur"
+          title={<>Your celebration, <span className="italic text-[#E4D6C1]">beautifully yours.</span></>}
+          subtitle="From intimate sunset pheras extending over Lake Badi to three-day palace takeovers under Rajasthan’s starlit skies, Aranya crafts destination weddings of timeless emotional resonance."
+          className="mb-16"
+        />
 
         {/* 6 Wedding Pillars (Ceremonies, Reception, Catering, Décor, Accommodation, Photography) */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
