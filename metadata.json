@@ -1,0 +1,6 @@
+{
+  "name": "Aranya Grand Retreat & Weddings",
+  "description": "A luxury retreat in Udaipur for unforgettable stays, curated experiences and destination weddings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
